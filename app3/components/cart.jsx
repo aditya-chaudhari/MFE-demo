@@ -45,6 +45,10 @@ useEffect(() => {
           </li>
         ))}
       </ul>
+      {cart&& <button onClick={()=>{
+        const customEvent = new CustomEvent('CHECKOUT', {detail: cart });
+        window.dispatchEvent(customEvent)
+      }}> Checkout</button>}
       </>
       )}
     </>

@@ -1,7 +1,7 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import Head from 'next/head';
 import {useRouter} from 'next/router'
-import {Heading, Pane, Link, Paragraph, Code, Strong, UnorderedList, ListItem} from 'evergreen-ui'
+import {Heading, Pane, Link, Paragraph, Code, Strong, UnorderedList, ListItem, Button} from 'evergreen-ui'
 
 // const add = React.lazy(()=>{import('app1/add')});
 const add = (await import('app1/add')).default;
@@ -14,6 +14,33 @@ const {Billing} = (await import('app4/billing'));
 
 export default function Home() {
   const router = useRouter()
+  const [ cartDetails, setCartDetails ] = useState(null);
+  const [ paymentSuccess, setPaymentSuccess] = useState(null);
+  useEffect(() => {
+    const checkoutFunc = async (e) => {
+      setCartDetails(e.detail);
+      
+      const sendReceivedMessageToAllIframes = event => {
+        document
+          .querySelectorAll("iframe")
+          .forEach(iframe => iframe.contentWindow.postMessage(event.data, "*"));
+      };
+      window.addEventListener("message", sendReceivedMessageToAllIframes);
+
+      setTimeout(()=>{
+        window.parent.postMessage({ channel: "PARENT_TO_CHILD",details: e.detail}, "http://localhost:3001");
+      }, 1000);
+    };
+    window.addEventListener('CHECKOUT', (e) => checkoutFunc(e));
+    window.addEventListener('message', function (e) {
+      if (e.data.channel === "CHILD_TO_PARENT") {
+        setPaymentSuccess(e.data.paymentSuccess);
+      }
+    });
+    return () => {
+      window.removeEventListener('CHECKOUT', (e) => { checkoutFunc(e) })
+    }
+  }, []);
   return (
     <div >
 
@@ -43,14 +70,19 @@ export default function Home() {
         <Pane padding={16} marginLeft={'2.5%'} marginRight={'2.5%'}>
           {/* <h4>MFE (Container App-2)</h4> */}
           <div className='row main-container'>
-              <div className='col-sm-6'>
-                <Search />
-              </div>
-              <div className='col-sm-6'>
-                {/* <Billing /> */}
-                <Cart />
-              </div>
-          </div>
+              {!paymentSuccess ? !cartDetails ? <>
+                  <div className='col-sm-6'>
+                    <Search />
+                  </div>
+                  <div className='col-sm-6'>
+                    {/* <Billing /> */}
+                    <Cart />
+                  </div>
+              </> : <iframe id="my-iframe" src="http://localhost:3005/" height="740px" style={{border: "0px"}} width="100%" title="checkout page"></iframe>
+              : null
+              }
+              {paymentSuccess && <div>Payment Successful</div>}
+            </div>
           {/* <h4>Utility functions</h4>
           <h2>
             {`Adding 2 and 3 =`} {add(2, 3)}
