@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: container-mfe-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: container-mfe
+  template:
+    metadata:
+      labels:
+        app: container-mfe
+    spec:
+      containers:
+        - name: container-mfe
+          image: container-mfe:0.0.1
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: container-mfe-srv
+spec:
+  selector:
+    app: container-mfe
+  ports:
+    - name: container-mfe
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

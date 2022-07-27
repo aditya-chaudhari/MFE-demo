@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: domain-mfe-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domain-mfe
+  template:
+    metadata:
+      labels:
+        app: domain-mfe
+    spec:
+      containers:
+        - name: domain-mfe
+          image: domain-mfe:0.0.1
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: domain-mfe-srv
+spec:
+  selector:
+    app: domain-mfe
+  ports:
+    - name: domain-mfe
+      protocol: TCP
+      port: 3001
+      targetPort: 3001

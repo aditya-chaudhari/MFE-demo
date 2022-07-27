@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: cart-mfe-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cart-mfe
+  template:
+    metadata:
+      labels:
+        app: cart-mfe
+    spec:
+      containers:
+        - name: cart-mfe
+          image: cart-mfe:0.0.1
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart-mfe-srv
+spec:
+  selector:
+    app: cart-mfe
+  ports:
+    - name: cart-mfe
+      protocol: TCP
+      port: 3002
+      targetPort: 3002

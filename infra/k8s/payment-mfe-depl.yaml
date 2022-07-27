@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: payment-mfe-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-mfe
+  template:
+    metadata:
+      labels:
+        app: payment-mfe
+    spec:
+      containers:
+        - name: payment-mfe
+          image: payment-mfe:0.0.1
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-mfe-srv
+spec:
+  selector:
+    app: payment-mfe
+  ports:
+    - name: payment-mfe
+      protocol: TCP
+      port: 3005
+      targetPort: 3005

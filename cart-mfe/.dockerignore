@@ -1,0 +1,9 @@
+.dockerignore
+.gitignore
+README.md
+build
+node_modules
+dist
+cypress
+openshift
+.prettierignore
