@@ -7,6 +7,17 @@ export default function Search(props) {
 
   const getSearchResults = () => {
     const searchQuery = document.getElementById("searchId").value;
+    if (!searchQuery || searchQuery.trim() === '')
+    {
+       alert("Domain name cannot be blank!")
+       return;
+    } 
+    var regex = /(<([^>]+)>)/ig
+    if (regex.test(searchQuery))
+    {
+       alert("Domain name cannot have HTML Tags!")
+       return;
+    } 
     fetch(`https://registration.bluehost.com/domains/search/${searchQuery}.com?suggestions=100&propertyID=52`)
     .then(res => res.json())
     .then(
@@ -31,9 +42,9 @@ export default function Search(props) {
 
   return (
     <>
-      <h4>Search</h4>
+      <h4>Search for a Domain Name</h4>
       <div className="search-container justify-row-center">
-        <input type="text" placeholder='Search...' className="search-input form-control" id="searchId" />   
+        <input type="text" placeholder='testflix2022' className="search-input form-control" id="searchId" required/>   
         <button type="button" onClick={()=>{getSearchResults()}} className="btn btn-success">Search</button>
       </div>
       <div className='search-list'>

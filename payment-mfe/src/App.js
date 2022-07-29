@@ -15,7 +15,7 @@ function App() {
   		<div className="row">
       	<div className="col-12 mt-4">
           <div className="card p-3">
-						<p className="mb-0 fw-bold h4">Payment Methods</p>
+						<p className="mb-0 fw-bold h4">Payment Method:</p>
           </div>
       	</div>
       	<div className="col-12">

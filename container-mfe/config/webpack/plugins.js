@@ -9,6 +9,7 @@ module.exports = [
     name: 'performanceMFE',
     filename: 'remoteEntry.js',
     remotes: {
+      containerMFE: 'containerMFE@http://container-mfe.com/remoteEntry.js',
       domainMFE: 'domainMFE@http://domain-mfe.com/remoteEntry.js',
       cartMFE: 'cartMFE@http://cart-mfe.com/remoteEntry.js',
     },

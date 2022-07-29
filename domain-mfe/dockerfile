@@ -2,7 +2,7 @@ FROM node:14.15.4-alpine3.12
 WORKDIR /app
 COPY package*.json ./
 RUN apk add --no-cache build-base gcc autoconf automake libtool zlib-dev libpng-dev nasm
-RUN npm ci
+RUN npm i
 COPY . .
 EXPOSE 3001
 CMD ["sh", "-c", "npm run start"]
