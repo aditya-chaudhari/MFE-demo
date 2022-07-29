@@ -1,5 +1,6 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import {Heading, Pane, Link} from 'evergreen-ui'
+import ErrorBoundary from './ErrorBoundary'
 
 const SearchComponent = lazy(() => import('domainMFE/search'));
 const CartComponent = lazy(() => import('cartMFE/cart'));
@@ -53,7 +54,7 @@ export default function App(){
       {!paymentSuccess ? !cartDetails ? <>
         <div className='col-sm-6'>
           <Suspense fallback={()=> <h1>loading...</h1>}>
-            <SearchComponent />
+            <ErrorBoundary><SearchComponent /></ErrorBoundary>
           </Suspense>
         </div>
         <div className='col-sm-6'>
